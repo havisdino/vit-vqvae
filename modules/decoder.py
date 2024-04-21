@@ -15,7 +15,10 @@ class Decoder(nn.Module):
         ze = ze.unsqueeze(-2)
         idx = (ze - self.codebook).norm(2, dim=-1).argmin(-1)
         zq = self.codebook[idx]
+        if self.training:
+            zq = (zq - ze).detach() + ze
+        
         x = self.vit(zq)
         logits = self.outproj(x)
-        return logits
+        return logits, zq
     
