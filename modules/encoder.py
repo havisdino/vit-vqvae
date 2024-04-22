@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from vit import ViT
+from modules.vit import ViT
 
 
 class Encoder(nn.Module):

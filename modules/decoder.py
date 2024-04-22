@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from vit import ViT
+from modules.vit import ViT
 
 
 class Decoder(nn.Module):
@@ -12,13 +12,14 @@ class Decoder(nn.Module):
         self.outproj = nn.Linear(d_model, d_patch)
         
     def forward(self, ze):
-        ze = ze.unsqueeze(-2)
-        idx = (ze - self.codebook).norm(2, dim=-1).argmin(-1)
+        _ze = ze.detach().unsqueeze(-2)
+        idx = (_ze - self.codebook).norm(2, dim=-1).argmin(-1)
         zq = self.codebook[idx]
         if self.training:
-            zq = (zq - ze).detach() + ze
-        
-        x = self.vit(zq)
+            x = (zq - ze).detach() + ze
+        else:
+            x = zq
+        x = self.vit(x)
         logits = self.outproj(x)
         return logits, zq
-    
+            
