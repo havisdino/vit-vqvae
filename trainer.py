@@ -4,6 +4,7 @@ from typing import Any
 import torch
 from torch import nn
 import torch.nn.functional as F
+from tqdm.auto import tqdm
 
 from logger import Logger
 from modules.vae import VAE
@@ -62,8 +63,8 @@ class Trainer:
         }
 
     def fit(self, train_loader, n_steps, logger: Logger):
+        bar = tqdm(total=n_steps)
         n_steps += self.global_step
-
         data_iter = iter(train_loader)
         while self.global_step < n_steps:
             try:
@@ -83,3 +84,4 @@ class Trainer:
                         self.grad_scaler, self.global_step,
                         self.global_step - self.checkpoint_interval * self.checkpoint_retention
                     )
+            bar.update()
