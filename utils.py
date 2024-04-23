@@ -53,9 +53,9 @@ def count_params(model):
 def vae_summary(vae: VAE):
     decoder_nparams = count_params(vae.decoder)
     encoder_nparams = count_params(vae.encoder)
-    print(f'Decoder parameters: {decoder_nparams:,}')
-    print(f'Encoder parameters: {encoder_nparams:,}')
-    print(f'Total parameters: {decoder_nparams + encoder_nparams}')
+    print(f'Decoder parameters\t: {decoder_nparams:,}')
+    print(f'Encoder parameters\t: {encoder_nparams:,}')
+    print(f'Total parameters\t: {decoder_nparams + encoder_nparams:,}')
     
     
 def unfold_to_patches(img, patch_size: list, strides: list):

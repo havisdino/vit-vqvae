@@ -32,6 +32,7 @@ if __name__ == '__main__':
         model.apply(init_weights)
         init_step = 0
     
+    model.to(args.device)
     vae_summary(model)
     
     trainloader = create_data_loader(C.img_size, args.batch_size, args.traindata)
