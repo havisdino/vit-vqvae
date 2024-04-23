@@ -15,13 +15,13 @@ from dataset import ImageDataset
 from modules.vae import VAE
 
 
-def save_checkpoint(model, optimizer, lr_scheduler, grad_scaler, global_step, checkpoint_retention):
+def save_checkpoint(model, optimizer, lr_scheduler, grad_scaler, global_step, remove_checkpoint=None):
         if not os.path.exists('checkpoints'):
             os.makedirs('checkpoints')
             
         path = f'checkpoints/vqvae-{global_step}.pt'    
             
-        last_kth = f'checkpoints/vqvae-{global_step - checkpoint_retention}.pt'
+        last_kth = f'checkpoints/vqvae-{remove_checkpoint}.pt'
         
         if os.path.exists(last_kth):
             os.remove(last_kth)

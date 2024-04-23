@@ -80,5 +80,6 @@ class Trainer:
                 if self.global_step % self.checkpoint_interval == 0:
                     save_checkpoint(
                         self.model, self.optimizer, self.lr_scheduler,
-                        self.grad_scaler, self.global_step, self.checkpoint_retention
+                        self.grad_scaler, self.global_step,
+                        self.global_step - self.checkpoint_interval * self.checkpoint_retention
                     )
