@@ -43,8 +43,8 @@ class Trainer:
     def accumulate_gradients(self):
         self.grad_scaler.unscale_(self.optimizer)
         nn.utils.clip_grad_norm_(self.model.parameters(), self.max_grad_norm)
-        self.scaler.step(self.optimizer)
-        self.scaler.update()
+        self.grad_scaler.step(self.optimizer)
+        self.grad_scaler.update()
         self.optimizer.zero_grad()
         self.lr_scheduler.step()
 
