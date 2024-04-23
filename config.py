@@ -1,10 +1,13 @@
+# Data config
 img_size = (128, 128)
+patch_size = (8, 8)
+strides = (8, 8)
 
 # Model config
 d_model = 256
-d_patch = 64
-codebook_size = 256
-dff = 256
+d_patch = 192
+codebook_size = 512
+dff = 512
 seqlen = 256
 n_heads = 4
 n_blocks = 5

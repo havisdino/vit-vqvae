@@ -58,13 +58,13 @@ def vae_summary(vae: VAE):
     print(f'Total parameters: {decoder_nparams + encoder_nparams}')
     
     
-def unfold_to_patches(img, patch_size: list, stride: list):
+def unfold_to_patches(img, patch_size: list, strides: list):
     C = img.size(-3)
-    assert len(patch_size) == 2 and len(stride) == 2
+    assert len(patch_size) == 2 and len(strides) == 2
     assert img.ndim == 3 or img.ndim == 4
     batched = img.ndim == 4
     d1, d2 = patch_size
-    s1, s2 = stride
+    s1, s2 = strides
 
     img = img.unfold(-1, d2, s2).unfold(-3, d1, s1)
 
@@ -104,6 +104,7 @@ def get_model_config():
         dff=C.dff,
         dropout=C.dropout
     )
+
 
 def new_model_from_config():
     return VAE(**get_model_config())
@@ -153,12 +154,13 @@ def new_modules_from_config():
 
     return model, optimizer, lr_scheduler, grad_scaler
 
+
 def create_data_loader(img_size, batch_size, directory) -> DataLoader:
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Resize(img_size),
         transforms.Lambda(lambda x: 2 * x - 1),
-        
+        transforms.Lambda(lambda x: unfold_to_patches(x, C.patch_size, C.strides))
     ])
     dataset = ImageDataset(directory, transform)
     return DataLoader(dataset, batch_size, shuffle=True, num_workers=2, prefetch_factor=2)
